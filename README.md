@@ -1,0 +1,1 @@
+This is the English Cats project. This app will help people learn languages.
