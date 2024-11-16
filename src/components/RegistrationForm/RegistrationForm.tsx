@@ -1,6 +1,6 @@
-import Input from "@mui/joy/Input";
-import Button from "@mui/joy/Button";
-import Stack from "@mui/joy/Stack";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import styles from "./RegistrationForm.module.css";
 import { FormEvent, useState } from "react";
 import { registerUser } from "../../store/auth/authCreators";
@@ -38,32 +38,28 @@ export const RegistrationForm = () => {
         onSubmit={onHandleRegister}
       >
         <Stack spacing={1}>
-          <Input
-            size="lg"
+          <TextField
             type="text"
             placeholder="username"
             variant="outlined"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <Input
-            size="lg"
+          <TextField
             type="text"
             placeholder="email"
             variant="outlined"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          <Input
-            size="lg"
+          <TextField
             type="password"
             placeholder="password"
             variant="outlined"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <Input
-            size="lg"
+          <TextField
             type="password"
             placeholder="repeat password"
             variant="outlined"

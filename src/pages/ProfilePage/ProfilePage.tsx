@@ -1,8 +1,7 @@
-import { Button } from "@mui/joy";
+import { Button } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getProfile, logoutUser } from "../../store/auth/authCreators";
 import { useEffect } from "react";
-import { Navigation } from "../../components/Navigation";
 
 export const ProfilePage = () => {
   const dispatch = useAppDispatch();
@@ -17,7 +16,6 @@ export const ProfilePage = () => {
 
   return (
     <>
-      <Navigation />
       <h1>ProfilePage</h1>
       {profileInfo && (
         <div>

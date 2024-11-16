@@ -13,26 +13,19 @@ import { useEffect } from "react";
 import { useAppDispatch } from "./hooks";
 import { getProfile } from "./store/auth/authCreators";
 import { RegistrationPage } from "./pages/RegistrationPage";
+import { Layout } from "./components/Layout";
 
 function App() {
-
   const dispatch = useAppDispatch();
-  
+
   useEffect(() => {
     dispatch(getProfile());
   }, [dispatch]);
 
   const routes = createBrowserRouter(
     createRoutesFromElements(
-      <>
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <MainPage />
-            </ProtectedRoute>
-          }
-        />
+      <Route path="/" element={<Layout />}>
+        <Route path="/" element={<MainPage />} />
         <Route
           path="/profile"
           element={
@@ -43,11 +36,7 @@ function App() {
         />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
-        {/* <Route path="/" element={<Navigate to="/posts" replace />} /> */}
-        {/* <Route path="/posts" element={<Main />} loader={postsLoader} />
-        <Route path="/posts/:id" element={<Post />} loader={postLoader} />
-        <Route path="/posts/new" element={<NewPost />} /> */}
-      </>
+      </Route>
     ),
     {
       future: {

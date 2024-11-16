@@ -1,6 +1,6 @@
-import Input from "@mui/joy/Input";
-import Button from "@mui/joy/Button";
-import Stack from "@mui/joy/Stack";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import styles from "./SignInForm.module.css";
 import { FormEvent, useState } from "react";
 import { loginUser } from "../../store/auth/authCreators";
@@ -26,16 +26,14 @@ export const SingInForm = () => {
       <h1>SingInForm</h1>
       <form className={styles.log_in_form} onSubmit={onHandleLogin}>
         <Stack spacing={1}>
-          <Input
-            size="lg"
+          <TextField
             type="text"
             placeholder="email or username"
             variant="outlined"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <Input
-            size="lg"
+          <TextField
             type="password"
             placeholder="password"
             variant="outlined"

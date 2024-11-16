@@ -90,7 +90,7 @@ export const getAccessToken =
         const res = await refreshTokenRequest;
         refreshTokenRequest = null;
 
-        if (res.data.access_token) {
+        if (res) {
           dispatch(loginSuccess(res.data.access_token));
           return res.data.access_token;
         }
