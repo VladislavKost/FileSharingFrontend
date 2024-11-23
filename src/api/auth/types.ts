@@ -20,6 +20,11 @@ export interface ILoginResponse {
 }
 
 export interface IProfileResponse {
+  id: number;
   username: string;
   email: string;
+  first_name: string;
+  last_name: string;
+  gender: string;
+  user_image: string;
 }

@@ -2,6 +2,7 @@ import { Button } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getProfile, logoutUser } from "../../store/auth/authCreators";
 import { useEffect } from "react";
+import { EditProfileForm } from "../../components/EditProfileForm";
 
 export const ProfilePage = () => {
   const dispatch = useAppDispatch();
@@ -20,8 +21,7 @@ export const ProfilePage = () => {
       {profileInfo && (
         <div>
           <h2>Profile info</h2>
-          <p>Username: {profileInfo.username}</p>
-          <p>Email: {profileInfo.email}</p>
+          <EditProfileForm />
         </div>
       )}
       <Button onClick={onHandleLogout}>Logout</Button>

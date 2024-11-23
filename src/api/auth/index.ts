@@ -8,23 +8,32 @@ import {
   IRegistrationRequest,
   IRegistrationResponse,
 } from "./types";
+import { IProfile } from "../../store/auth/authSlice";
 
-export const login = (params: ILoginRequest): AxiosPromise<ILoginResponse> =>
+export const loginApiRequest = (
+  params: ILoginRequest
+): AxiosPromise<ILoginResponse> =>
   axiosInstance.post(Endpoints.AUTH.LOGIN, params);
 
-export const refreshToken = (): AxiosPromise<ILoginResponse> =>
+export const refreshTokenApiRequest = (): AxiosPromise<ILoginResponse> =>
   axiosInstance.get(Endpoints.AUTH.REFRESH);
 
-export const logout = (): AxiosPromise<void> => {
+export const logoutApiRequest = (): AxiosPromise<void> => {
   return axiosInstance.get(Endpoints.AUTH.LOGOUT);
 };
 
-export const registerUser = (
+export const registerUserApiRequest = (
   params: IRegistrationRequest
 ): AxiosPromise<IRegistrationResponse> => {
   return axiosInstance.post(Endpoints.AUTH.REGISTER, params);
 };
 
-export const getProfile = (): AxiosPromise<IProfileResponse> => {
+export const changeProfileInfoApiRequest = (
+  params: IProfile
+): AxiosPromise<IProfileResponse> => {
+  return axiosInstance.put(Endpoints.AUTH.PROFILE, params);
+};
+
+export const getProfileApiRequest = (): AxiosPromise<IProfileResponse> => {
   return axiosInstance.get(Endpoints.AUTH.PROFILE);
 };

@@ -1,6 +1,16 @@
 import { createSlice, Draft } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
+export interface IProfile {
+  id: number | null;
+  email: string | null;
+  username: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  gender: string | null;
+  user_image: string | null;
+}
+
 export interface AuthState {
   authData: {
     accessToken: string | null;
@@ -8,16 +18,15 @@ export interface AuthState {
     error: string | null;
   };
   profileData: {
-    profile: { email: string | null; username: string | null } | null;
+    profile: IProfile | null;
+    isLoading: boolean;
+    error: string | null;
+  };
+  saveProfileData: {
     isLoading: boolean;
     error: string | null;
   };
   isAuth: boolean;
-}
-
-export interface ProfileSuccessAction {
-  email: string | null;
-  username: string | null;
 }
 
 const initialState: AuthState = {
@@ -28,6 +37,10 @@ const initialState: AuthState = {
   },
   profileData: {
     profile: null,
+    isLoading: false,
+    error: null,
+  },
+  saveProfileData: {
     isLoading: false,
     error: null,
   },
@@ -90,6 +103,43 @@ export const authSlice = createSlice({
       },
       isAuth: false,
     }),
+    updateProfileStart: (state: AuthState) => ({
+      ...state,
+      saveProfileData: {
+        ...state.saveProfileData,
+        isLoading: true,
+      },
+    }),
+    updateProfileSuccess: (
+      state: AuthState,
+      action: PayloadAction<IProfile>
+    ) => ({
+      ...state,
+      saveProfileData: {
+        ...state.saveProfileData,
+        isLoading: false,
+        error: null,
+      },
+      profileData: {
+        ...state.profileData,
+        profile: action.payload,
+        isLoading: false,
+        error: null,
+      },
+      isAuth: true,
+    }),
+    updateProfileFailure: (
+      state: AuthState,
+      action: PayloadAction<string>
+    ) => ({
+      ...state,
+      saveProfileData: {
+        ...state.saveProfileData,
+        isLoading: false,
+        error: action.payload,
+      },
+      isAuth: false,
+    }),
     loadProfileStart: (state: AuthState) => ({
       ...state,
       profileData: {
@@ -99,7 +149,7 @@ export const authSlice = createSlice({
     }),
     loadProfileSuccess: (
       state: AuthState,
-      action: PayloadAction<ProfileSuccessAction>
+      action: PayloadAction<IProfile>
     ) => ({
       ...state,
       profileData: {
@@ -109,10 +159,7 @@ export const authSlice = createSlice({
         error: null,
       },
     }),
-    loadProfileFailure: (
-      state: Draft<AuthState>,
-      action: PayloadAction<string>
-    ) => ({
+    loadProfileFailure: (state: AuthState, action: PayloadAction<string>) => ({
       ...state,
       profileData: {
         ...state.profileData,
@@ -131,6 +178,9 @@ export const {
   loadProfileSuccess,
   loadProfileFailure,
   logoutSuccess,
+  updateProfileStart,
+  updateProfileSuccess,
+  updateProfileFailure,
   registrationStart,
   registrationSuccess,
   registrationFailure,

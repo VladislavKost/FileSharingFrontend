@@ -1,4 +1,5 @@
 import { Dispatch } from "@reduxjs/toolkit";
+import { AxiosPromise } from "axios";
 import {
   ILoginRequest,
   ILoginResponse,
@@ -15,18 +16,28 @@ import {
   registrationStart,
   registrationFailure,
   registrationSuccess,
+  IProfile,
+  updateProfileStart,
+  updateProfileFailure,
+  updateProfileSuccess,
 } from "./authSlice";
-import api from "../../api";
 import { history } from "../../utils/history";
-import { AxiosPromise } from "axios";
 import { store } from "..";
+import {
+  changeProfileInfoApiRequest,
+  getProfileApiRequest,
+  loginApiRequest,
+  logoutApiRequest,
+  refreshTokenApiRequest,
+  registerUserApiRequest,
+} from "../../api/auth";
 
 export const loginUser =
   (data: ILoginRequest) =>
   async (dispatch: Dispatch): Promise<void> => {
     try {
       dispatch(loginStart());
-      const response = await api.auth.login(data);
+      const response = await loginApiRequest(data);
       dispatch(loginSuccess(response.data.access_token));
       await dispatch(getProfile() as any);
     } catch (error: any) {
@@ -40,7 +51,7 @@ export const registerUser =
   async (dispatch: Dispatch): Promise<void> => {
     try {
       dispatch(registrationStart());
-      const response = await api.auth.registerUser(data);
+      const response = await registerUserApiRequest(data);
       dispatch(registrationSuccess(response.data.access_token));
       await dispatch(getProfile() as any);
     } catch (error: any) {
@@ -49,11 +60,23 @@ export const registerUser =
     }
   };
 
+export const changeUserProfileInfo =
+  (data: IProfile) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(updateProfileStart());
+      const response = await changeProfileInfoApiRequest(data);
+      dispatch(updateProfileSuccess(response.data));
+    } catch (error: any) {
+      console.log(error);
+      dispatch(updateProfileFailure(error.message));
+    }
+  };
+
 export const logoutUser =
   () =>
   async (dispatch: Dispatch): Promise<void> => {
     try {
-      await api.auth.logout();
+      await logoutApiRequest();
       dispatch(logoutSuccess());
       history.push("/login");
     } catch (error: any) {
@@ -65,9 +88,8 @@ export const getProfile = () => async (dispatch: Dispatch) => {
   try {
     dispatch(loadProfileStart());
 
-    const response = await api.auth.getProfile();
-    const data = response.data;
-    dispatch(loadProfileSuccess(data));
+    const response = await getProfileApiRequest();
+    dispatch(loadProfileSuccess(response.data));
   } catch (error: any) {
     console.log(error);
     dispatch(loadProfileFailure(error.message));
@@ -84,7 +106,7 @@ export const getAccessToken =
 
       if (!accessToken || refresh) {
         if (refreshTokenRequest === null) {
-          refreshTokenRequest = api.auth.refreshToken();
+          refreshTokenRequest = refreshTokenApiRequest();
         }
 
         const res = await refreshTokenRequest;
