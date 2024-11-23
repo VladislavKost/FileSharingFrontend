@@ -25,6 +25,8 @@ export const Navigation = () => {
   const navigator = useNavigate();
   const dispatch = useAppDispatch();
 
+  const userData = useAppSelector((state) => state.auth.profileData.profile);
+
   const onHandleProfile = () => {
     navigator("/profile");
     setAnchorElUser(null);
@@ -119,8 +121,8 @@ export const Navigation = () => {
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
               <Avatar
-                alt="Remy Sharp"
-                src="https://static.baza.farpost.ru/v/1625292826833_bulletin"
+                alt={userData?.username || ""}
+                src={userData?.user_image || ""}
               />
             </IconButton>
           </Tooltip>

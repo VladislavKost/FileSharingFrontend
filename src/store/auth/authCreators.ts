@@ -61,11 +61,12 @@ export const registerUser =
   };
 
 export const changeUserProfileInfo =
-  (data: IProfile) => async (dispatch: Dispatch) => {
+  (data: FormData) => async (dispatch: Dispatch) => {
     try {
       dispatch(updateProfileStart());
       const response = await changeProfileInfoApiRequest(data);
       dispatch(updateProfileSuccess(response.data));
+      await dispatch(getProfile() as any);
     } catch (error: any) {
       console.log(error);
       dispatch(updateProfileFailure(error.message));

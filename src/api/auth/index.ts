@@ -8,7 +8,6 @@ import {
   IRegistrationRequest,
   IRegistrationResponse,
 } from "./types";
-import { IProfile } from "../../store/auth/authSlice";
 
 export const loginApiRequest = (
   params: ILoginRequest
@@ -29,9 +28,13 @@ export const registerUserApiRequest = (
 };
 
 export const changeProfileInfoApiRequest = (
-  params: IProfile
+  params: FormData
 ): AxiosPromise<IProfileResponse> => {
-  return axiosInstance.put(Endpoints.AUTH.PROFILE, params);
+  return axiosInstance.put(Endpoints.AUTH.PROFILE, params, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 export const getProfileApiRequest = (): AxiosPromise<IProfileResponse> => {

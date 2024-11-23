@@ -3,19 +3,27 @@ import { useAppDispatch, useAppSelector } from "../../hooks";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import { changeUserProfileInfo } from "../../store/auth/authCreators";
 import MenuItem from "@mui/material/MenuItem";
 
+interface IUserDataForm {
+  email: { data: string; new: boolean };
+  username: { data: string; new: boolean };
+  first_name: { data: string; new: boolean };
+  last_name: { data: string; new: boolean };
+  gender: { data: string; new: boolean };
+  user_image: { data: File | string | undefined; new: boolean };
+}
+
 export const EditProfileForm = () => {
-  const [userDataForm, setUserDataForm] = useState({
-    id: null,
-    email: "",
-    username: "",
-    first_name: "",
-    last_name: "",
-    gender: "",
-    user_image: "",
+  const [userDataForm, setUserDataForm] = useState<IUserDataForm>({
+    email: { data: "", new: false },
+    username: { data: "", new: false },
+    first_name: { data: "", new: false },
+    last_name: { data: "", new: false },
+    gender: { data: "", new: false },
+    user_image: { data: "", new: false },
   });
 
   const userData = useAppSelector((state) => state.auth.profileData.profile);
@@ -23,99 +31,107 @@ export const EditProfileForm = () => {
 
   useEffect(() => {
     const data = {
-      id: userData?.id ?? null,
-      email: userData?.email ?? "",
-      username: userData?.username ?? "",
-      first_name: userData?.first_name ?? "",
-      last_name: userData?.last_name ?? "",
-      gender: userData?.gender ?? "",
-      user_image: userData?.user_image ?? "",
+      email: { data: userData?.email ?? "", new: false },
+      username: { data: userData?.username ?? "", new: false },
+      first_name: { data: userData?.first_name ?? "", new: false },
+      last_name: { data: userData?.last_name ?? "", new: false },
+      gender: { data: userData?.gender ?? "", new: false },
+      user_image: { data: userData?.user_image ?? "", new: false },
     };
-    setUserDataForm(
-      data as {
-        id: null;
-        email: string;
-        username: string;
-        first_name: string;
-        last_name: string;
-        gender: string;
-        user_image: string;
-      }
-    );
+    setUserDataForm(data);
   }, [userData]);
 
   const handleChangeProfileInfo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(userDataForm);
-    dispatch(
-      changeUserProfileInfo({
-        ...userDataForm,
-      })
-    );
+    const formData = createFormData();
+    dispatch(changeUserProfileInfo(formData));
   };
-  const handleChangeGender = (e: SelectChangeEvent) => {
-    setUserDataForm({ ...userDataForm, gender: e.target.value });
-    console.log(userDataForm);
+
+  const createFormData = () => {
+    const formData = new FormData();
+    Object.entries(userDataForm).forEach(([key, value]) => {
+      if (value.new) {
+        if (key === "user_image") {
+          formData.append(key, value.data, value.data.name);
+        } else {
+          formData.append(key, value.data);
+        }
+      }
+    });
+    return formData;
   };
 
   const handleUploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setUserDataForm({
-          ...userDataForm,
-          user_image: reader.result as string,
-        });
-      };
-      reader.readAsDataURL(file);
-    }
+    setUserDataForm({ ...userDataForm, user_image: { data: file, new: true } });
   };
 
   return (
     <form onSubmit={handleChangeProfileInfo}>
       <Stack spacing={1}>
-        <TextField type="text" value={userDataForm.id} disabled />
-        <TextField type="text" value={userDataForm.username} disabled />
+        <TextField type="text" value={userDataForm.username.data} disabled />
         <TextField
           type="text"
-          value={userDataForm.email}
+          value={userDataForm.email.data}
           onChange={(e) =>
-            setUserDataForm({ ...userDataForm, email: e.target.value })
+            setUserDataForm({
+              ...userDataForm,
+              email: { data: e.target.value, new: true },
+            })
           }
         />
         <TextField
           type="text"
-          value={userDataForm.first_name}
+          value={userDataForm.first_name.data}
           onChange={(e) =>
-            setUserDataForm({ ...userDataForm, first_name: e.target.value })
+            setUserDataForm({
+              ...userDataForm,
+              first_name: { data: e.target.value, new: true },
+            })
           }
         />
         <TextField
           type="text"
-          value={userDataForm.last_name}
+          value={userDataForm.last_name.data}
           onChange={(e) =>
-            setUserDataForm({ ...userDataForm, last_name: e.target.value })
+            setUserDataForm({
+              ...userDataForm,
+              last_name: { data: e.target.value, new: true },
+            })
           }
         />
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={userDataForm.gender}
-          label="Age"
-          onChange={handleChangeGender}
+          value={userDataForm.gender.data}
+          label="Gender"
+          onChange={(e) =>
+            setUserDataForm({
+              ...userDataForm,
+              gender: { data: e.target.value, new: true },
+            })
+          }
         >
           <MenuItem value={"male"}>Male</MenuItem>
           <MenuItem value={"female"}>Female</MenuItem>
         </Select>
-        {userDataForm.user_image && (
-          <img src={userDataForm.user_image} alt="avatar" />
+        {userDataForm.user_image.data && (
+          <img
+            style={{ width: "500px" }}
+            src={
+              typeof userDataForm.user_image.data === "string"
+                ? userDataForm.user_image.data
+                : URL.createObjectURL(userDataForm.user_image.data)
+            }
+            alt="avatar"
+          />
         )}
         <input
           type="file"
           name="myImage"
+          accept="image/jpeg,image/png,image/gif"
           onChange={handleUploadImage}
-          // Event handler to capture file selection and update the state
         />
         <Button type="submit">Save</Button>
       </Stack>
