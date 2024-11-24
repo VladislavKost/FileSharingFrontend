@@ -5,6 +5,7 @@ const Endpoints = {
     LOGOUT: "/users/logout/",
     PROFILE: "/users/profile/",
     REGISTER: "/users/signup/",
+    CHANGE_PASSWORD: "/users/password/change/",
   },
 };
 export default Endpoints;

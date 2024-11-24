@@ -2,7 +2,9 @@ import { Button } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getProfile, logoutUser } from "../../store/auth/authCreators";
 import { useEffect } from "react";
-import { EditProfileForm } from "../../components/EditProfileForm";
+
+import Stack from "@mui/material/Stack";
+import { SideProfilePanel } from "../../components/SideProfilePanel";
 
 export const ProfilePage = () => {
   const dispatch = useAppDispatch();
@@ -19,10 +21,9 @@ export const ProfilePage = () => {
     <>
       <h1>ProfilePage</h1>
       {profileInfo && (
-        <div>
-          <h2>Profile info</h2>
-          <EditProfileForm />
-        </div>
+        <Stack direction={"row"} spacing={2}>
+          <SideProfilePanel />
+        </Stack>
       )}
       <Button onClick={onHandleLogout}>Logout</Button>
     </>

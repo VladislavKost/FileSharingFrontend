@@ -30,7 +30,7 @@ export const registerUserApiRequest = (
 export const changeProfileInfoApiRequest = (
   params: FormData
 ): AxiosPromise<IProfileResponse> => {
-  return axiosInstance.put(Endpoints.AUTH.PROFILE, params, {
+  return axiosInstance.patch(Endpoints.AUTH.PROFILE, params, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -39,4 +39,14 @@ export const changeProfileInfoApiRequest = (
 
 export const getProfileApiRequest = (): AxiosPromise<IProfileResponse> => {
   return axiosInstance.get(Endpoints.AUTH.PROFILE);
+};
+
+export const changeProfilePasswordApiRequest = (
+  params: FormData
+): AxiosPromise<IProfileResponse> => {
+  return axiosInstance.patch(Endpoints.AUTH.CHANGE_PASSWORD, params, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };

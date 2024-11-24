@@ -4,6 +4,13 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import FormControl from "@mui/material/FormControl";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import FlipCameraIosIcon from "@mui/icons-material/FlipCameraIos";
+
 import { changeUserProfileInfo } from "../../store/auth/authCreators";
 import MenuItem from "@mui/material/MenuItem";
 
@@ -68,73 +75,113 @@ export const EditProfileForm = () => {
   };
 
   return (
-    <form onSubmit={handleChangeProfileInfo}>
-      <Stack spacing={1}>
-        <TextField type="text" value={userDataForm.username.data} disabled />
-        <TextField
-          type="text"
-          value={userDataForm.email.data}
-          onChange={(e) =>
-            setUserDataForm({
-              ...userDataForm,
-              email: { data: e.target.value, new: true },
-            })
-          }
-        />
-        <TextField
-          type="text"
-          value={userDataForm.first_name.data}
-          onChange={(e) =>
-            setUserDataForm({
-              ...userDataForm,
-              first_name: { data: e.target.value, new: true },
-            })
-          }
-        />
-        <TextField
-          type="text"
-          value={userDataForm.last_name.data}
-          onChange={(e) =>
-            setUserDataForm({
-              ...userDataForm,
-              last_name: { data: e.target.value, new: true },
-            })
-          }
-        />
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={userDataForm.gender.data}
-          label="Gender"
-          onChange={(e) =>
-            setUserDataForm({
-              ...userDataForm,
-              gender: { data: e.target.value, new: true },
-            })
-          }
-        >
-          <MenuItem value={"male"}>Male</MenuItem>
-          <MenuItem value={"female"}>Female</MenuItem>
-        </Select>
-        {userDataForm.user_image.data && (
-          <img
-            style={{ width: "500px" }}
-            src={
-              typeof userDataForm.user_image.data === "string"
-                ? userDataForm.user_image.data
-                : URL.createObjectURL(userDataForm.user_image.data)
-            }
-            alt="avatar"
+    <Box component="form" onSubmit={handleChangeProfileInfo} width={"100%"}>
+      <Stack spacing={2} direction={"row"}>
+        <Stack spacing={2}>
+          <Box position="relative" display="inline-block">
+            <Box>
+              {userDataForm.user_image.data && (
+                <img
+                  style={{ width: "500px", height: "500px" }}
+                  src={
+                    typeof userDataForm.user_image.data === "string"
+                      ? userDataForm.user_image.data
+                      : URL.createObjectURL(userDataForm.user_image.data)
+                  }
+                  alt="avatar"
+                />
+              )}
+            </Box>
+            <Box
+              position={"absolute"}
+              top={250}
+              left={250}
+              sx={{ transform: "translate(-50)" }}
+            >
+              <IconButton
+                // sx={{
+                //   position: "absolute",
+                //   top: "50",
+                //   left: "50",
+                //   transform: "translate(-50)",
+                // }}
+                component="label"
+              >
+                <input
+                  hidden
+                  type="file"
+                  name="myImage"
+                  accept="image/jpeg,image/png,image/gif"
+                  onChange={handleUploadImage}
+                />
+                <FlipCameraIosIcon fontSize="large" />
+              </IconButton>
+            </Box>
+          </Box>
+        </Stack>
+
+        <Stack spacing={2}>
+          <TextField
+            label="Username"
+            type="text"
+            value={userDataForm.username.data}
+            aria-readonly
           />
-        )}
-        <input
-          type="file"
-          name="myImage"
-          accept="image/jpeg,image/png,image/gif"
-          onChange={handleUploadImage}
-        />
-        <Button type="submit">Save</Button>
+          <TextField
+            label="First name"
+            type="text"
+            value={userDataForm.first_name.data}
+            onChange={(e) =>
+              setUserDataForm({
+                ...userDataForm,
+                first_name: { data: e.target.value, new: true },
+              })
+            }
+          />
+          <TextField
+            label="Last name"
+            type="text"
+            value={userDataForm.last_name.data}
+            onChange={(e) =>
+              setUserDataForm({
+                ...userDataForm,
+                last_name: { data: e.target.value, new: true },
+              })
+            }
+          />
+          <TextField
+            type="text"
+            label="Email"
+            value={userDataForm.email.data}
+            onChange={(e) =>
+              setUserDataForm({
+                ...userDataForm,
+                email: { data: e.target.value, new: true },
+              })
+            }
+          />
+          <FormControl fullWidth variant="outlined">
+            <InputLabel id="gender-select-label">Gender</InputLabel>
+            <Select
+              labelId="gender-select-label"
+              id="gender-select"
+              value={userDataForm.gender.data}
+              // label="Gender"
+              input={<OutlinedInput id="gender-select" label="Gender" />}
+              onChange={(e) =>
+                setUserDataForm({
+                  ...userDataForm,
+                  gender: { data: e.target.value, new: true },
+                })
+              }
+            >
+              <MenuItem value={"male"}>Male</MenuItem>
+              <MenuItem value={"female"}>Female</MenuItem>
+            </Select>
+          </FormControl>
+        </Stack>
       </Stack>
-    </form>
+      <Button type="submit">Save</Button>
+    </Box>
   );
 };

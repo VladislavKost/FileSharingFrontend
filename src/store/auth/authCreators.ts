@@ -16,7 +16,6 @@ import {
   registrationStart,
   registrationFailure,
   registrationSuccess,
-  IProfile,
   updateProfileStart,
   updateProfileFailure,
   updateProfileSuccess,
@@ -30,6 +29,7 @@ import {
   logoutApiRequest,
   refreshTokenApiRequest,
   registerUserApiRequest,
+  changeProfilePasswordApiRequest,
 } from "../../api/auth";
 
 export const loginUser =
@@ -65,6 +65,19 @@ export const changeUserProfileInfo =
     try {
       dispatch(updateProfileStart());
       const response = await changeProfileInfoApiRequest(data);
+      dispatch(updateProfileSuccess(response.data));
+      await dispatch(getProfile() as any);
+    } catch (error: any) {
+      console.log(error);
+      dispatch(updateProfileFailure(error.message));
+    }
+  };
+
+export const changeUserPassword =
+  (data: FormData) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(updateProfileStart());
+      const response = await changeProfilePasswordApiRequest(data);
       dispatch(updateProfileSuccess(response.data));
       await dispatch(getProfile() as any);
     } catch (error: any) {
