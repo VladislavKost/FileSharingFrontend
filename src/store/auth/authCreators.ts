@@ -51,12 +51,10 @@ export const registerUser =
   async (dispatch: Dispatch): Promise<void> => {
     try {
       dispatch(registrationStart());
-      const response = await registerUserApiRequest(data);
-      dispatch(registrationSuccess(response.data.access_token));
-      await dispatch(getProfile() as any);
+      await registerUserApiRequest(data);
+      dispatch(registrationSuccess());
     } catch (error: any) {
-      console.log(error);
-      dispatch(registrationFailure(error.message));
+      dispatch(registrationFailure(error.response.data));
     }
   };
 

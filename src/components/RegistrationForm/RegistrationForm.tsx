@@ -13,17 +13,17 @@ export const RegistrationForm = () => {
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
+  const [password1, setPassword1] = useState("");
+  const [password2, setPassword2] = useState("");
+
+  const registrationData = useAppSelector(
+    (state) => state.auth.registrationData
+  );
 
   const onHandleRegister = (e: FormEvent) => {
     e.preventDefault();
-    if (password !== repeatPassword) {
-      alert("Passwords do not match");
-      return;
-    }
-    if (username && email && password && repeatPassword) {
-      dispatch(registerUser({ username, password, email }));
+    if (username && email && password1 && password2) {
+      dispatch(registerUser({ username, password1, password2, email }));
     }
   };
 
@@ -43,6 +43,8 @@ export const RegistrationForm = () => {
             placeholder="username"
             variant="outlined"
             value={username}
+            error={!!registrationData.error?.username}
+            helperText={registrationData.error?.username}
             onChange={(e) => setUsername(e.target.value)}
           />
           <TextField
@@ -50,22 +52,29 @@ export const RegistrationForm = () => {
             placeholder="email"
             variant="outlined"
             value={email}
+            error={!!registrationData.error?.email}
+            helperText={registrationData.error?.email}
             onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             type="password"
             placeholder="password"
             variant="outlined"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={password1}
+            error={!!registrationData.error?.password1}
+            helperText={registrationData.error?.password1}
+            onChange={(e) => setPassword1(e.target.value)}
           />
           <TextField
             type="password"
             placeholder="repeat password"
             variant="outlined"
-            value={repeatPassword}
-            onChange={(e) => setRepeatPassword(e.target.value)}
+            value={password2}
+            error={!!registrationData.error?.password2}
+            helperText={registrationData.error?.password2}
+            onChange={(e) => setPassword2(e.target.value)}
           />
+          <div>{registrationData.error?.non_field_errors !== undefined}</div>
           <Button type="submit">Registration</Button>
         </Stack>
       </form>

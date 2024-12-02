@@ -13,9 +13,9 @@ export const axiosInstance = axios.create({
 
 const urlsSkipAuth = [
   Endpoints.AUTH.LOGIN,
-  Endpoints.AUTH.REFRESH,
+  Endpoints.AUTH.TOKEN_REFRESH,
   Endpoints.AUTH.LOGOUT,
-  Endpoints.AUTH.REGISTER,
+  Endpoints.AUTH.REGISTRATION,
 ];
 
 axiosInstance.interceptors.request.use(async (config) => {
@@ -41,7 +41,6 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
     const isLoggedIn = !!store.getState().auth.authData.accessToken;
-
     if (
       error.response?.status === 401 &&
       isLoggedIn &&
@@ -60,7 +59,7 @@ axiosInstance.interceptors.response.use(
       } catch (refreshedError) {
         store.dispatch(logoutUser());
       }
-
+    } else {
       throw error;
     }
   }

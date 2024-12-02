@@ -14,6 +14,7 @@ import { useAppDispatch } from "./hooks";
 import { getProfile } from "./store/auth/authCreators";
 import { RegistrationPage } from "./pages/RegistrationPage";
 import { Layout } from "./components/Layout";
+import { RegistrationEmailVerifyPage } from "./components/RegistrationEmailVerifyPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -36,6 +37,10 @@ function App() {
         />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/registration" element={<RegistrationPage />} />
+        <Route
+          path="/registration/account-email-verify/:key"
+          element={<RegistrationEmailVerifyPage />}
+        />
       </Route>
     ),
     {

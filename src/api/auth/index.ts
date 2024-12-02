@@ -15,7 +15,7 @@ export const loginApiRequest = (
   axiosInstance.post(Endpoints.AUTH.LOGIN, params);
 
 export const refreshTokenApiRequest = (): AxiosPromise<ILoginResponse> =>
-  axiosInstance.get(Endpoints.AUTH.REFRESH);
+  axiosInstance.get(Endpoints.AUTH.TOKEN_REFRESH);
 
 export const logoutApiRequest = (): AxiosPromise<void> => {
   return axiosInstance.get(Endpoints.AUTH.LOGOUT);
@@ -24,7 +24,7 @@ export const logoutApiRequest = (): AxiosPromise<void> => {
 export const registerUserApiRequest = (
   params: IRegistrationRequest
 ): AxiosPromise<IRegistrationResponse> => {
-  return axiosInstance.post(Endpoints.AUTH.REGISTER, params);
+  return axiosInstance.post(Endpoints.AUTH.REGISTRATION, params);
 };
 
 export const changeProfileInfoApiRequest = (

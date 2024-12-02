@@ -11,11 +11,29 @@ export interface IProfile {
   user_image: string | null;
 }
 
+export interface IRegistrationResponse {
+  username: string;
+  email: string;
+  password1: string;
+  password2: string;
+  non_field_errors: string;
+}
+
 export interface AuthState {
   authData: {
     accessToken: string | null;
     isLoading: boolean;
     error: string | null;
+  };
+  registrationData: {
+    isLoading: boolean;
+    error: {
+      username: string;
+      email: string;
+      password1: string;
+      password2: string;
+      non_field_errors: string;
+    } | null;
   };
   profileData: {
     profile: IProfile | null;
@@ -34,6 +52,16 @@ const initialState: AuthState = {
     accessToken: null,
     isLoading: false,
     error: null,
+  },
+  registrationData: {
+    isLoading: false,
+    error: {
+      username: "",
+      email: "",
+      password1: "",
+      password2: "",
+      non_field_errors: "",
+    },
   },
   profileData: {
     profile: null,
@@ -79,29 +107,29 @@ export const authSlice = createSlice({
     }),
     registrationStart: (state: AuthState) => ({
       ...state,
-      authData: {
-        ...state.authData,
+      registrationData: {
+        ...state.registrationData,
         isLoading: true,
       },
     }),
-    registrationSuccess: (state: AuthState, action: PayloadAction<string>) => ({
+    registrationSuccess: (state: AuthState) => ({
       ...state,
-      authData: {
-        ...state.authData,
-        accessToken: action.payload,
+      registrationData: {
+        ...state.registrationData,
         isLoading: false,
         error: null,
       },
-      isAuth: true,
     }),
-    registrationFailure: (state: AuthState, action: PayloadAction<string>) => ({
+    registrationFailure: (
+      state: AuthState,
+      action: PayloadAction<IRegistrationResponse>
+    ) => ({
       ...state,
-      authData: {
-        ...state.authData,
+      registrationData: {
+        ...state.registrationData,
         isLoading: false,
         error: action.payload,
       },
-      isAuth: false,
     }),
     updateProfileStart: (state: AuthState) => ({
       ...state,

@@ -7,12 +7,19 @@ export interface ILoginRequest {
 
 export interface IRegistrationRequest {
   username: string;
-  password: string;
+  password1: string;
+  password2: string;
   email: string;
 }
 
 export interface IRegistrationResponse {
-  access_token: string;
+  message: {
+    username: string;
+    email: string;
+    password1: string;
+    password2: string;
+    non_field_errors: string;
+  };
 }
 
 export interface ILoginResponse {
