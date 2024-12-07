@@ -2,6 +2,7 @@ import { AxiosPromise } from "axios";
 import { axiosInstance } from "../instance";
 import Endpoints from "../endpoints";
 import {
+  IEmailVerificationRequest,
   ILoginRequest,
   ILoginResponse,
   IProfileResponse,
@@ -49,4 +50,18 @@ export const changeProfilePasswordApiRequest = (
       "Content-Type": "multipart/form-data",
     },
   });
+};
+
+export const verifyEmailApiRequest = (
+  params: IEmailVerificationRequest
+): AxiosPromise<IProfileResponse> => {
+  return axiosInstance.post(
+    Endpoints.AUTH.REGISTRATION_EMAIL_VERIFICATION,
+    params,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
 };

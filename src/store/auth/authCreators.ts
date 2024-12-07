@@ -19,6 +19,9 @@ import {
   updateProfileStart,
   updateProfileFailure,
   updateProfileSuccess,
+  verifyEmailStart,
+  verifyEmailSuccess,
+  verifyEmailFailure,
 } from "./authSlice";
 import { history } from "../../utils/history";
 import { store } from "..";
@@ -30,6 +33,7 @@ import {
   refreshTokenApiRequest,
   registerUserApiRequest,
   changeProfilePasswordApiRequest,
+  verifyEmailApiRequest,
 } from "../../api/auth";
 
 export const loginUser =
@@ -135,5 +139,17 @@ export const getAccessToken =
       console.error(e);
 
       return null;
+    }
+  };
+
+export const verifyEmail =
+  (data: { key: string }) =>
+  async (dispatch: Dispatch): Promise<void> => {
+    try {
+      dispatch(verifyEmailStart());
+      await verifyEmailApiRequest(data);
+      dispatch(verifyEmailSuccess());
+    } catch (error: any) {
+      dispatch(verifyEmailFailure(error.response.data));
     }
   };

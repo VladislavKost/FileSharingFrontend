@@ -1,4 +1,4 @@
-import { createSlice, Draft } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface IProfile {
@@ -9,6 +9,14 @@ export interface IProfile {
   last_name: string | null;
   gender: string | null;
   user_image: string | null;
+}
+
+export interface IRegistrationFormErrors {
+  username: string;
+  email: string;
+  password1: string;
+  password2: string;
+  non_field_errors: string;
 }
 
 export interface IRegistrationResponse {
@@ -27,6 +35,7 @@ export interface AuthState {
   };
   registrationData: {
     isLoading: boolean;
+    success: boolean;
     error: {
       username: string;
       email: string;
@@ -34,6 +43,11 @@ export interface AuthState {
       password2: string;
       non_field_errors: string;
     } | null;
+  };
+  verifyEmailData: {
+    isLoading: boolean;
+    success: boolean;
+    error: string | null;
   };
   profileData: {
     profile: IProfile | null;
@@ -55,6 +69,7 @@ const initialState: AuthState = {
   },
   registrationData: {
     isLoading: false,
+    success: false,
     error: {
       username: "",
       email: "",
@@ -62,6 +77,11 @@ const initialState: AuthState = {
       password2: "",
       non_field_errors: "",
     },
+  },
+  verifyEmailData: {
+    isLoading: false,
+    success: false,
+    error: null,
   },
   profileData: {
     profile: null,
@@ -116,6 +136,7 @@ export const authSlice = createSlice({
       ...state,
       registrationData: {
         ...state.registrationData,
+        success: true,
         isLoading: false,
         error: null,
       },
@@ -127,9 +148,69 @@ export const authSlice = createSlice({
       ...state,
       registrationData: {
         ...state.registrationData,
+        success: false,
         isLoading: false,
         error: action.payload,
       },
+    }),
+    registrationFormError: (
+      state: AuthState,
+      action: PayloadAction<IRegistrationFormErrors>
+    ) => ({
+      ...state,
+      registrationData: {
+        ...state.registrationData,
+        error: action.payload,
+      },
+    }),
+    verifyEmailStart: (state: AuthState) => ({
+      ...state,
+      verifyEmailData: {
+        ...state.verifyEmailData,
+        isLoading: true,
+      },
+    }),
+    verifyEmailSuccess: (state: AuthState) => ({
+      ...state,
+      verifyEmailData: {
+        isLoading: false,
+        success: true,
+        error: null,
+      },
+    }),
+    verifyEmailFailure: (state: AuthState, action: PayloadAction<string>) => ({
+      ...state,
+      verifyEmailData: {
+        ...state.verifyEmailData,
+        isLoading: false,
+        error: action.payload,
+      },
+    }),
+    getProfileStart: (state: AuthState) => ({
+      ...state,
+      profileData: {
+        ...state.profileData,
+        isLoading: true,
+      },
+    }),
+    getProfileSuccess: (state: AuthState, action: PayloadAction<IProfile>) => ({
+      ...state,
+      profileData: {
+        ...state.profileData,
+        profile: action.payload,
+        isLoading: false,
+        error: null,
+      },
+      isAuth: true,
+    }),
+    getProfileFailure: (state: AuthState, action: PayloadAction<string>) => ({
+      ...state,
+      profileData: {
+        ...state.profileData,
+        isLoading: false,
+        error: action.payload,
+      },
+      isAuth: false,
     }),
     updateProfileStart: (state: AuthState) => ({
       ...state,
@@ -206,6 +287,9 @@ export const {
   loadProfileSuccess,
   loadProfileFailure,
   logoutSuccess,
+  verifyEmailStart,
+  verifyEmailSuccess,
+  verifyEmailFailure,
   updateProfileStart,
   updateProfileSuccess,
   updateProfileFailure,

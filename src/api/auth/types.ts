@@ -35,3 +35,11 @@ export interface IProfileResponse {
   gender: string;
   user_image: string;
 }
+
+export interface IEmailVerificationRequest {
+  key: string;
+}
+
+export interface IProfileResponse {
+  detail: string;
+}

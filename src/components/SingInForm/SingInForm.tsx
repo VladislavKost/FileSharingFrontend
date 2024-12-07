@@ -20,9 +20,13 @@ export const SingInForm = () => {
   };
 
   const isAuth = useAppSelector((state: RootState) => state.auth.isAuth);
+  const emailVerifySuccess = useAppSelector(
+    (state: RootState) => state.auth.verifyEmailData.success
+  );
 
   return (
     <>
+      {emailVerifySuccess && <p>Email verified successfully</p>}
       <h1>SingInForm</h1>
       <form className={styles.log_in_form} onSubmit={onHandleLogin}>
         <Stack spacing={1}>
