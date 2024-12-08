@@ -10,17 +10,25 @@ import { MainPage } from "./pages/MainPage/MainPage";
 import { ProtectedRoute } from "./hocs/PrivateRoute";
 import { ProfilePage } from "./pages/ProfilePage";
 import { useEffect } from "react";
-import { useAppDispatch } from "./hooks";
-import { getProfile } from "./store/auth/authCreators";
+import { useAppDispatch, useAppSelector } from "./hooks";
+import { logoutUser, verifyAccessToken } from "./store/auth/authCreators";
 import { RegistrationPage } from "./pages/RegistrationPage";
 import { Layout } from "./components/Layout";
 import { RegistrationEmailVerifyPage } from "./components/RegistrationEmailVerifyPage";
 
 function App() {
   const dispatch = useAppDispatch();
+  const accessToken = useAppSelector(
+    (state) => state.auth.authData.accessToken
+  );
+  console.log(accessToken);
 
   useEffect(() => {
-    dispatch(getProfile());
+    if (accessToken) {
+      dispatch(verifyAccessToken({ token: accessToken }));
+    } else {
+      dispatch(logoutUser());
+    }
   }, [dispatch]);
 
   const routes = createBrowserRouter(

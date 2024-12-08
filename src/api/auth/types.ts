@@ -43,3 +43,7 @@ export interface IEmailVerificationRequest {
 export interface IProfileResponse {
   detail: string;
 }
+
+export interface ICheckAccessToken {
+  token: string;
+}

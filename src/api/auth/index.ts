@@ -2,6 +2,7 @@ import { AxiosPromise } from "axios";
 import { axiosInstance } from "../instance";
 import Endpoints from "../endpoints";
 import {
+  ICheckAccessToken,
   IEmailVerificationRequest,
   ILoginRequest,
   ILoginResponse,
@@ -19,7 +20,7 @@ export const refreshTokenApiRequest = (): AxiosPromise<ILoginResponse> =>
   axiosInstance.get(Endpoints.AUTH.TOKEN_REFRESH);
 
 export const logoutApiRequest = (): AxiosPromise<void> => {
-  return axiosInstance.get(Endpoints.AUTH.LOGOUT);
+  return axiosInstance.post(Endpoints.AUTH.LOGOUT);
 };
 
 export const registerUserApiRequest = (
@@ -64,4 +65,8 @@ export const verifyEmailApiRequest = (
       },
     }
   );
+};
+
+export const verifyAccessTokenApiRequest = (params: ICheckAccessToken) => {
+  return axiosInstance.post(Endpoints.AUTH.TOKEN_VERIFY, params);
 };

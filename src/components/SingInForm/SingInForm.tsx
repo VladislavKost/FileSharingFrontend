@@ -23,6 +23,7 @@ export const SingInForm = () => {
   const emailVerifySuccess = useAppSelector(
     (state: RootState) => state.auth.verifyEmailData.success
   );
+  const authData = useAppSelector((state) => state.auth.authData);
 
   return (
     <>
@@ -35,6 +36,10 @@ export const SingInForm = () => {
             placeholder="email or username"
             variant="outlined"
             value={username}
+            error={
+              typeof authData.error === "object" &&
+              !!authData.error?.non_field_errors
+            }
             onChange={(e) => setUsername(e.target.value)}
           />
           <TextField
@@ -42,8 +47,16 @@ export const SingInForm = () => {
             placeholder="password"
             variant="outlined"
             value={password}
+            error={
+              typeof authData.error === "object" &&
+              !!authData.error?.non_field_errors
+            }
             onChange={(e) => setPassword(e.target.value)}
           />
+          {typeof authData.error === "object" &&
+            authData.error?.non_field_errors && (
+              <p>{authData.error.non_field_errors}</p>
+            )}
           <Button type="submit">Login</Button>
         </Stack>
       </form>

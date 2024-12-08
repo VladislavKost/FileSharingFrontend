@@ -34,6 +34,7 @@ import {
   registerUserApiRequest,
   changeProfilePasswordApiRequest,
   verifyEmailApiRequest,
+  verifyAccessTokenApiRequest,
 } from "../../api/auth";
 
 export const loginUser =
@@ -45,8 +46,7 @@ export const loginUser =
       dispatch(loginSuccess(response.data.access_token));
       await dispatch(getProfile() as any);
     } catch (error: any) {
-      console.log(error);
-      dispatch(loginFailure(error.message));
+      dispatch(loginFailure(error.response.data));
     }
   };
 
@@ -103,7 +103,6 @@ export const logoutUser =
 export const getProfile = () => async (dispatch: Dispatch) => {
   try {
     dispatch(loadProfileStart());
-
     const response = await getProfileApiRequest();
     dispatch(loadProfileSuccess(response.data));
   } catch (error: any) {
@@ -151,5 +150,16 @@ export const verifyEmail =
       dispatch(verifyEmailSuccess());
     } catch (error: any) {
       dispatch(verifyEmailFailure(error.response.data));
+    }
+  };
+
+export const verifyAccessToken =
+  (params: { token: string }) =>
+  async (dispatch: Dispatch): Promise<void> => {
+    try {
+      await verifyAccessTokenApiRequest(params);
+      await dispatch(getProfile() as any);
+    } catch (error: any) {
+      logoutUser();
     }
   };

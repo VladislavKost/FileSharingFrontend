@@ -31,7 +31,7 @@ export interface AuthState {
   authData: {
     accessToken: string | null;
     isLoading: boolean;
-    error: string | null;
+    error: string | { non_field_errors: string } | null;
   };
   registrationData: {
     isLoading: boolean;
