@@ -1,1 +1,1 @@
-This is the English Cats project. This app will help people learn languages.
+This is the file sharing project. This app will help people share files with each other.

@@ -9,6 +9,7 @@ import {
   IProfileResponse,
   IRegistrationRequest,
   IRegistrationResponse,
+  IRefreshTokenResponse,
 } from "./types";
 
 export const loginApiRequest = (
@@ -16,8 +17,8 @@ export const loginApiRequest = (
 ): AxiosPromise<ILoginResponse> =>
   axiosInstance.post(Endpoints.AUTH.LOGIN, params);
 
-export const refreshTokenApiRequest = (): AxiosPromise<ILoginResponse> =>
-  axiosInstance.get(Endpoints.AUTH.TOKEN_REFRESH);
+export const refreshTokenApiRequest = (): AxiosPromise<IRefreshTokenResponse> =>
+  axiosInstance.post(Endpoints.AUTH.TOKEN_REFRESH);
 
 export const logoutApiRequest = (): AxiosPromise<void> => {
   return axiosInstance.post(Endpoints.AUTH.LOGOUT);

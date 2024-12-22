@@ -23,11 +23,28 @@ export interface IRegistrationResponse {
 }
 
 export interface ILoginResponse {
-  access_token: string;
+  access: string;
+  refresh: string;
+  user: {
+    pk: number;
+    username: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+    gender: string;
+    user_image: string;
+  };
+  access_expiration: string;
+  refresh_expiration: string;
+}
+
+export interface IRefreshTokenResponse {
+  access: string;
+  access_expiration: string;
 }
 
 export interface IProfileResponse {
-  id: number;
+  pk: number;
   username: string;
   email: string;
   first_name: string;
@@ -38,10 +55,6 @@ export interface IProfileResponse {
 
 export interface IEmailVerificationRequest {
   key: string;
-}
-
-export interface IProfileResponse {
-  detail: string;
 }
 
 export interface ICheckAccessToken {

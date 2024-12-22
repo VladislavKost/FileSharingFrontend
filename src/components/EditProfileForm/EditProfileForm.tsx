@@ -50,7 +50,6 @@ export const EditProfileForm = () => {
 
   const handleChangeProfileInfo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(userDataForm);
     const formData = createFormData();
     dispatch(changeUserProfileInfo(formData));
   };
@@ -99,12 +98,12 @@ export const EditProfileForm = () => {
               sx={{ transform: "translate(-50)" }}
             >
               <IconButton
-                // sx={{
-                //   position: "absolute",
-                //   top: "50",
-                //   left: "50",
-                //   transform: "translate(-50)",
-                // }}
+                sx={{
+                  position: "absolute",
+                  top: "50",
+                  left: "50",
+                  transform: "translate(-50)",
+                }}
                 component="label"
               >
                 <input

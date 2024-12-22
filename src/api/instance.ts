@@ -1,7 +1,11 @@
 import axios, { AxiosError, AxiosRequestHeaders } from "axios";
 import Endpoints from "./endpoints";
 import { store } from "../store";
-import { getAccessToken, logoutUser } from "../store/auth/authCreators";
+import {
+  getAccessToken,
+  logoutUser,
+  refreshAccessToken,
+} from "../store/auth/authCreators";
 
 export const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -47,7 +51,7 @@ axiosInstance.interceptors.response.use(
       error.request.url !== Endpoints.AUTH.LOGOUT
     ) {
       try {
-        const accessToken = await store.dispatch(getAccessToken(true));
+        const accessToken = await store.dispatch(refreshAccessToken());
         if (accessToken) {
           const originalRequest = error.config;
           if (originalRequest) {
@@ -59,6 +63,8 @@ axiosInstance.interceptors.response.use(
       } catch (refreshedError) {
         store.dispatch(logoutUser());
       }
+    } else if (error.response?.status === 401 && !isLoggedIn) {
+      store.dispatch(logoutUser());
     } else {
       throw error;
     }

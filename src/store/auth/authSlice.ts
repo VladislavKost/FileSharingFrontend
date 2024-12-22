@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { ILoginResponse } from "../../api/auth/types";
 
 export interface IProfile {
-  id: number | null;
+  pk: number | null;
   email: string | null;
   username: string | null;
   first_name: string | null;
@@ -30,6 +31,7 @@ export interface IRegistrationResponse {
 export interface AuthState {
   authData: {
     accessToken: string | null;
+    accessExpiration: string | null;
     isLoading: boolean;
     error: string | { non_field_errors: string } | null;
   };
@@ -64,6 +66,7 @@ export interface AuthState {
 const initialState: AuthState = {
   authData: {
     accessToken: null,
+    accessExpiration: null,
     isLoading: false,
     error: null,
   },
@@ -106,15 +109,26 @@ export const authSlice = createSlice({
         isLoading: true,
       },
     }),
-    loginSuccess: (state: AuthState, action: PayloadAction<string>) => ({
+    loginSuccess: (
+      state: AuthState,
+      action: PayloadAction<ILoginResponse>
+    ) => ({
       ...state,
       authData: {
         ...state.authData,
-        accessToken: action.payload,
+        accessToken: action.payload.access,
+        accessExpiration: action.payload.access_expiration,
         isLoading: false,
         error: null,
       },
       isAuth: true,
+      profileData: {
+        ...state.profileData,
+        profile: {
+          ...state.profileData.profile,
+          ...action.payload.user,
+        },
+      },
     }),
     loginFailure: (state: AuthState, action: PayloadAction<string>) => ({
       ...state,
@@ -277,6 +291,27 @@ export const authSlice = createSlice({
       },
     }),
     logoutSuccess: (state: AuthState) => initialState,
+    refreshTokenSuccess: (
+      state: AuthState,
+      action: PayloadAction<{ access: string; access_expiration: string }>
+    ) => ({
+      ...state,
+      authData: {
+        ...state.authData,
+        accessToken: action.payload.access,
+        accessExpiration: action.payload.access_expiration,
+      },
+      isAuth: true,
+    }),
+    refreshTokenFailure: (state: AuthState) => ({
+      ...state,
+      authData: {
+        ...state.authData,
+        accessToken: null,
+        accessExpiration: null,
+      },
+      isAuth: false,
+    }),
   },
 });
 export const {
@@ -296,6 +331,8 @@ export const {
   registrationStart,
   registrationSuccess,
   registrationFailure,
+  refreshTokenSuccess,
+  refreshTokenFailure,
 } = authSlice.actions;
 
 export default authSlice.reducer;

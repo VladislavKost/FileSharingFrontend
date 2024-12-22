@@ -8,9 +8,7 @@ export const NavList = ({ ...props }) => {
   const isAuth = useAppSelector((state: RootState) => state.auth.isAuth);
 
   const pages = [
-    { name: "Home", id: "home", href: "/", secure: false },
-    { name: "Exercises", id: "exercises", href: "/", secure: false },
-    { name: "Learn works", id: "learn_words", href: "/", secure: false },
+    { name: "Home", id: "home", href: "/", secure: true },
     { name: "Profile", id: "profile", href: "/profile", secure: true },
   ];
 

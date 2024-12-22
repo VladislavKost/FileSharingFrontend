@@ -50,7 +50,7 @@ export const RegistrationForm = () => {
   };
   const isAuth = useAppSelector((state: RootState) => state.auth.isAuth);
   const isRegistrationSuccess = registrationData.success;
-  console.log(registrationData);
+
   return (
     <>
       {!isRegistrationSuccess && <h1>RegistrationForm</h1>}

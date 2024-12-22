@@ -1,10 +1,6 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import { AxiosPromise } from "axios";
-import {
-  ILoginRequest,
-  ILoginResponse,
-  IRegistrationRequest,
-} from "../../api/auth/types";
+import { ILoginRequest, IRegistrationRequest } from "../../api/auth/types";
 import {
   loadProfileFailure,
   loadProfileStart,
@@ -22,6 +18,8 @@ import {
   verifyEmailStart,
   verifyEmailSuccess,
   verifyEmailFailure,
+  refreshTokenSuccess,
+  refreshTokenFailure,
 } from "./authSlice";
 import { history } from "../../utils/history";
 import { store } from "..";
@@ -43,13 +41,11 @@ export const loginUser =
     try {
       dispatch(loginStart());
       const response = await loginApiRequest(data);
-      dispatch(loginSuccess(response.data.access_token));
-      await dispatch(getProfile() as any);
+      dispatch(loginSuccess(response.data));
     } catch (error: any) {
       dispatch(loginFailure(error.response.data));
     }
   };
-
 export const registerUser =
   (data: IRegistrationRequest) =>
   async (dispatch: Dispatch): Promise<void> => {
@@ -111,32 +107,21 @@ export const getProfile = () => async (dispatch: Dispatch) => {
   }
 };
 
-let refreshTokenRequest: AxiosPromise<ILoginResponse> | null = null;
-
 export const getAccessToken =
-  (refresh: boolean = false) =>
-  async (dispatch: Dispatch<any>): Promise<string | null> => {
+  () =>
+  async (dispatch: Dispatch): Promise<string | null> => {
     try {
-      const accessToken = store.getState().auth.authData.accessToken;
+      let accessToken = store.getState().auth.authData.accessToken;
 
-      if (!accessToken || refresh) {
-        if (refreshTokenRequest === null) {
-          refreshTokenRequest = refreshTokenApiRequest();
-        }
-
-        const res = await refreshTokenRequest;
-        refreshTokenRequest = null;
-
-        if (res) {
-          dispatch(loginSuccess(res.data.access_token));
-          return res.data.access_token;
+      if (!accessToken) {
+        const refreshTokenRequest = await dispatch(refreshAccessToken() as any);
+        if (refreshTokenRequest !== undefined) {
+          accessToken = refreshTokenRequest;
         }
       }
-
       return accessToken;
     } catch (e) {
-      console.error(e);
-
+      console.error("Error getting access token:", e);
       return null;
     }
   };
@@ -154,12 +139,34 @@ export const verifyEmail =
   };
 
 export const verifyAccessToken =
-  (params: { token: string }) =>
+  () =>
   async (dispatch: Dispatch): Promise<void> => {
     try {
-      await verifyAccessTokenApiRequest(params);
-      await dispatch(getProfile() as any);
+      const accessToken = store.getState().auth.authData.accessToken;
+      if (accessToken) {
+        await verifyAccessTokenApiRequest({ token: accessToken });
+        await dispatch(getProfile() as any);
+      }
     } catch (error: any) {
       logoutUser();
+    }
+  };
+
+export const refreshAccessToken =
+  () =>
+  async (dispatch: Dispatch): Promise<string | undefined> => {
+    try {
+      const refreshToken = await refreshTokenApiRequest();
+      if (refreshToken && refreshToken.data && refreshToken.data.access) {
+        dispatch(refreshTokenSuccess(refreshToken.data));
+        dispatch(getProfile() as any);
+        return refreshToken.data.access;
+      } else {
+        logoutUser();
+      }
+    } catch (error) {
+      dispatch(refreshTokenFailure());
+      logoutUser();
+      return undefined;
     }
   };
