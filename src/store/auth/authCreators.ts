@@ -1,5 +1,4 @@
 import { Dispatch } from "@reduxjs/toolkit";
-import { AxiosPromise } from "axios";
 import { ILoginRequest, IRegistrationRequest } from "../../api/auth/types";
 import {
   loadProfileFailure,

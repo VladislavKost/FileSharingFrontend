@@ -11,6 +11,8 @@ const Endpoints = {
     REGISTRATION: "/users/registration/", // POST
     REGISTRATION_EMAIL_VERIFICATION: "/users/registration/verify-email/", // POST
     REGISTRATION_RESEND_EMAIL_VERIFICATION: "/users/registration/resend-email/", // POST
+
+    MY_FILES: "/files/", // POST, GET, DELETE
   },
 };
 export default Endpoints;
