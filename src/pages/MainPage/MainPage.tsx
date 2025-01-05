@@ -1,6 +1,8 @@
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useAppDispatch } from "../../hooks";
 import { getMyFiles } from "../../store/files/filesCreators";
+import { FilesList } from "../../components/FilesList";
+import { FileUploadForm } from "../../components/FileUploadForm";
 
 export const MainPage = () => {
   const dispatch = useAppDispatch();
@@ -8,13 +10,11 @@ export const MainPage = () => {
     dispatch(getMyFiles());
   }, []);
 
-  const files = useAppSelector((state) => state.files.files);
   return (
     <div>
       <h1>Main Page</h1>
-      {files.map((file) => (
-        <div key={file.id}>{file.file_name}</div>
-      ))}
+      <FilesList />
+      <FileUploadForm />
     </div>
   );
 };
