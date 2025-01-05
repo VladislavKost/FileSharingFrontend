@@ -15,6 +15,7 @@ import { getAccessToken } from "./store/auth/authCreators";
 import { RegistrationPage } from "./pages/RegistrationPage";
 import { Layout } from "./components/Layout";
 import { RegistrationEmailVerifyPage } from "./components/RegistrationEmailVerifyPage";
+import { AllFilesPage } from "./pages/AllFilesPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -27,6 +28,7 @@ function App() {
     createRoutesFromElements(
       <Route path="/" element={<Layout />}>
         <Route path="/" element={<MainPage />} />
+        <Route path="/all-files" element={<AllFilesPage />} />
         <Route
           path="/profile"
           element={

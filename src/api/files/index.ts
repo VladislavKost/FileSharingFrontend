@@ -24,3 +24,7 @@ export const downloadFileApiRequest = (id: number): AxiosPromise => {
     responseType: "blob",
   });
 };
+
+export const getAllFilesApiRequest = (): AxiosPromise<IFile[]> => {
+  return axiosInstance.get(Endpoints.AUTH.ALL_FILES);
+};

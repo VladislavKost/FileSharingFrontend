@@ -2,6 +2,7 @@ import { Dispatch } from "redux";
 import {
   deleteFileApiRequest,
   downloadFileApiRequest,
+  getAllFilesApiRequest,
   getMyFilesApiRequest,
   uploadFileApiRequest,
 } from "../../api/files";
@@ -9,6 +10,7 @@ import {
   loadFilesFailure,
   loadFilesStart,
   loadFilesSuccess,
+  loadAllFilesSuccess,
 } from "./filesSlice";
 
 export const getMyFiles = () => async (dispatch: Dispatch) => {
@@ -54,3 +56,14 @@ export const downloadFile =
       console.log(error);
     }
   };
+
+export const getAllFiles = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch(loadFilesStart());
+    const response = await getAllFilesApiRequest();
+    dispatch(loadAllFilesSuccess(response.data));
+  } catch (error: any) {
+    console.log(error);
+    dispatch(loadFilesFailure(error.message));
+  }
+};

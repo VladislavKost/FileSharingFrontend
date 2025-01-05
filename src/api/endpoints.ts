@@ -13,6 +13,7 @@ const Endpoints = {
     REGISTRATION_RESEND_EMAIL_VERIFICATION: "/users/registration/resend-email/", // POST
 
     MY_FILES: "/files/", // POST, GET, DELETE
+    ALL_FILES: "/files/all", // POST, GET, DELETE
   },
 };
 export default Endpoints;

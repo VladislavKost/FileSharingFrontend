@@ -8,7 +8,8 @@ export const NavList = ({ ...props }) => {
   const isAuth = useAppSelector((state: RootState) => state.auth.isAuth);
 
   const pages = [
-    { name: "Home", id: "home", href: "/", secure: true },
+    { name: "My files", id: "home", href: "/", secure: true },
+    { name: "All files", id: "all-files", href: "/all-files", secure: true },
     { name: "Profile", id: "profile", href: "/profile", secure: true },
   ];
 

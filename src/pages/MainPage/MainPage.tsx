@@ -8,11 +8,11 @@ export const MainPage = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getMyFiles());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div>
-      <h1>Main Page</h1>
+      <h1>My files</h1>
       <FilesList />
       <FileUploadForm />
     </div>
