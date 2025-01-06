@@ -62,7 +62,6 @@ const decodeMimeString = (mimeString: string): string => {
 
 const getFileName = (contentDisposition: string) => {
   const correctName = decodeMimeString(contentDisposition);
-  debugger;
   const regex = /filename=([^"]+)/;
   const match = correctName.match(regex);
   return match ? match[1] : "UnknownName.txt";

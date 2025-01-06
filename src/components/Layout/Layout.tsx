@@ -6,7 +6,7 @@ export const Layout = () => {
   return (
     <div className="site-container">
       <Header />
-      <main>
+      <main style={{ padding: "10px" }}>
         <Outlet />
       </main>
       {/* <Footer /> */}

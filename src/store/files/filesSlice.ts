@@ -14,6 +14,8 @@ export interface IFile {
   owner: IOwner;
   unique_code: string;
   uploaded_at: string;
+  file_size: number;
+  last_downloaded: string;
   comment: string;
 }
 

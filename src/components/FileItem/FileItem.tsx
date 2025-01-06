@@ -4,6 +4,8 @@ import { useAppDispatch } from "../../hooks";
 import {
   deleteFile,
   downloadFile,
+  getAllFiles,
+  getMyFiles,
   updateFileInfo,
 } from "../../store/files/filesCreators";
 import Box from "@mui/material/Box";
@@ -26,6 +28,11 @@ export const FileItem = ({
 
   const handleDownload = () => {
     dispatch(downloadFile(file.id));
+    if (!all) {
+      dispatch(getMyFiles());
+    } else {
+      dispatch(getAllFiles());
+    }
   };
 
   useEffect(() => {
@@ -121,7 +128,28 @@ export const FileItem = ({
           overflowWrap: "break-word",
         }}
       >
+        File size: {file.file_size}B
+      </Box>
+      <Box
+        sx={{
+          textAlign: "center",
+          width: "200px",
+          wordWrap: "break-word",
+          overflowWrap: "break-word",
+        }}
+      >
         Uploaded: {new Date(file.uploaded_at).toLocaleString("ru-RU")}
+      </Box>
+      <Box
+        sx={{
+          textAlign: "center",
+          width: "200px",
+          wordWrap: "break-word",
+          overflowWrap: "break-word",
+        }}
+      >
+        Last downloaded:{" "}
+        {new Date(file.last_downloaded).toLocaleString("ru-RU")}
       </Box>
       {file.comment && !editMode && (
         <Box
@@ -132,7 +160,7 @@ export const FileItem = ({
             overflowWrap: "break-word",
           }}
         >
-          Комментарий: {file.comment}
+          Comment: {file.comment}
         </Box>
       )}
       {editMode && (
