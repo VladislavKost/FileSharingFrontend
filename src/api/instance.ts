@@ -23,10 +23,12 @@ const urlsSkipAuth = [
 ];
 
 axiosInstance.interceptors.request.use(async (config) => {
-  if (config.url && urlsSkipAuth.includes(config.url)) {
+  if (
+    config.url &&
+    (urlsSkipAuth.includes(config.url) || config.url.startsWith("/files/"))
+  ) {
     return config;
   }
-
   const accessToken = await store.dispatch(getAccessToken());
 
   if (accessToken) {

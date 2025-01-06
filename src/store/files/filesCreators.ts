@@ -44,21 +44,45 @@ export const deleteFile = (id: number) => async (dispatch: Dispatch) => {
   }
 };
 
-export const downloadFile =
-  (id: number, filename: string) => async (dispatch: Dispatch) => {
-    try {
-      const response = await downloadFileApiRequest(id);
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", filename);
-      link.click();
-      window.URL.revokeObjectURL(url);
-    } catch (error: any) {
-      console.log(error);
+const decodeMimeString = (mimeString: string): string => {
+  const mimeRegex = /=\?([\w-]+)\?([Bb])\?([^?]+)\?=/g;
+  const decodedStringFunction = (
+    match: string,
+    charset: string,
+    encoding: string,
+    encoded: string
+  ): string => {
+    if (encoding === "B") {
+      return window.atob(encoded);
     }
+    return decodeURIComponent(escape(window.atob(encoded)));
   };
+  return mimeString.replace(mimeRegex, decodedStringFunction);
+};
 
+const getFileName = (contentDisposition: string) => {
+  const correctName = decodeMimeString(contentDisposition);
+  debugger;
+  const regex = /filename=([^"]+)/;
+  const match = correctName.match(regex);
+  return match ? match[1] : "UnknownName.txt";
+};
+
+export const downloadFile = (id: number) => async (dispatch: Dispatch) => {
+  try {
+    const response = await downloadFileApiRequest(id);
+    const contentDisposition = response.headers["content-disposition"];
+    const fileName = getFileName(contentDisposition);
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", fileName);
+    link.click();
+    window.URL.revokeObjectURL(url);
+  } catch (error: any) {
+    console.log(error);
+  }
+};
 export const getAllFiles = () => async (dispatch: Dispatch) => {
   try {
     dispatch(loadFilesStart());

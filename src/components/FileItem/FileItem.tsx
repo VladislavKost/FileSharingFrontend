@@ -25,7 +25,7 @@ export const FileItem = ({
   };
 
   const handleDownload = () => {
-    dispatch(downloadFile(file.id, file.file_name));
+    dispatch(downloadFile(file.id));
   };
 
   useEffect(() => {
@@ -45,6 +45,12 @@ export const FileItem = ({
       };
       dispatch(updateFileInfo(file.id, newData));
     }
+  };
+
+  const handleShare = () => {
+    const origin = window.location.origin.toString();
+    const shareUrl = `${origin}/files/${file.id}`;
+    navigator.clipboard.writeText(shareUrl);
   };
 
   const onCancelClick = () => {
@@ -148,7 +154,7 @@ export const FileItem = ({
       {!editMode && (
         <Box sx={{ display: "flex", gap: 1 }}>
           <button onClick={handleDownload}>Download</button>
-          <button onClick={handleDelete}>Share</button>
+          <button onClick={handleShare}>Share</button>
           <button onClick={handleDelete}>Delete</button>
         </Box>
       )}

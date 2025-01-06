@@ -3,6 +3,7 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
   RouterProvider,
+  Navigate,
 } from "react-router-dom";
 import { LoginPage } from "./pages/LoginPage";
 import "./App.css";
@@ -16,6 +17,7 @@ import { RegistrationPage } from "./pages/RegistrationPage";
 import { Layout } from "./components/Layout";
 import { RegistrationEmailVerifyPage } from "./components/RegistrationEmailVerifyPage";
 import { AllFilesPage } from "./pages/AllFilesPage";
+import { DownloadFilePage } from "./pages/DownloadFilePage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -29,12 +31,17 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route
           path="/"
+          element={<Navigate replace to="/my-files"></Navigate>}
+        />
+        <Route
+          path="/my-files"
           element={
             <ProtectedRoute>
               <MainPage />
             </ProtectedRoute>
           }
         />
+        <Route path="/files/:id" element={<DownloadFilePage />} />
         <Route
           path="/all-files"
           element={
@@ -75,5 +82,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
