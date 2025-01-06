@@ -1,8 +1,13 @@
 import Stack from "@mui/material/Stack";
 import { IFile } from "../../store/files/filesSlice";
 import { useAppDispatch } from "../../hooks";
-import { deleteFile, downloadFile } from "../../store/files/filesCreators";
+import {
+  deleteFile,
+  downloadFile,
+  updateFileInfo,
+} from "../../store/files/filesCreators";
 import Box from "@mui/material/Box";
+import { useEffect, useState } from "react";
 
 export const FileItem = ({
   file,
@@ -12,6 +17,9 @@ export const FileItem = ({
   all: boolean;
 }) => {
   const dispatch = useAppDispatch();
+  const [editMode, setEditMode] = useState(false);
+  const [comment, setComment] = useState(file.comment);
+  const [fileName, setFileName] = useState(file.file_name);
   const handleDelete = () => {
     dispatch(deleteFile(file.id));
   };
@@ -19,6 +27,32 @@ export const FileItem = ({
   const handleDownload = () => {
     dispatch(downloadFile(file.id, file.file_name));
   };
+
+  useEffect(() => {
+    if (editMode) {
+      console.log("editMode", editMode);
+    }
+  }, [editMode]);
+
+  const onSaveClick = () => {
+    if (!fileName) {
+      alert("File name is required");
+    } else {
+      setEditMode(false);
+      const newData = {
+        comment,
+        file_name: fileName,
+      };
+      dispatch(updateFileInfo(file.id, newData));
+    }
+  };
+
+  const onCancelClick = () => {
+    setEditMode(false);
+    setComment(file.comment);
+    setFileName(file.file_name);
+  };
+
   return (
     <Stack
       direction="column"
@@ -32,17 +66,35 @@ export const FileItem = ({
         padding: 2,
       }}
     >
-      <Box
-        sx={{
-          textAlign: "center",
-          width: "200px",
-          wordWrap: "break-word",
-          overflowWrap: "break-word",
-          fontWeight: "bold",
-        }}
-      >
-        {file.file_name}
-      </Box>
+      {!editMode && (
+        <Box
+          sx={{
+            textAlign: "center",
+            width: "200px",
+            wordWrap: "break-word",
+            overflowWrap: "break-word",
+            fontWeight: "bold",
+          }}
+        >
+          {file.file_name}
+        </Box>
+      )}
+      {editMode && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+          }}
+        >
+          <input
+            type="text"
+            value={fileName}
+            placeholder="File name"
+            onChange={(e) => setFileName(e.target.value)}
+          />
+        </Box>
+      )}
       {all && file.owner && (
         <Box
           sx={{
@@ -55,7 +107,17 @@ export const FileItem = ({
           Author: {file.owner.first_name} {file.owner.last_name}
         </Box>
       )}
-      {file.comment && (
+      <Box
+        sx={{
+          textAlign: "center",
+          width: "200px",
+          wordWrap: "break-word",
+          overflowWrap: "break-word",
+        }}
+      >
+        Uploaded: {new Date(file.uploaded_at).toLocaleString("ru-RU")}
+      </Box>
+      {file.comment && !editMode && (
         <Box
           sx={{
             textAlign: "center",
@@ -67,10 +129,33 @@ export const FileItem = ({
           Комментарий: {file.comment}
         </Box>
       )}
+      {editMode && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 1,
+          }}
+        >
+          <input
+            type="text"
+            value={comment}
+            placeholder="Comment"
+            onChange={(e) => setComment(e.target.value)}
+          />
+        </Box>
+      )}
+      {!editMode && (
+        <Box sx={{ display: "flex", gap: 1 }}>
+          <button onClick={handleDownload}>Download</button>
+          <button onClick={handleDelete}>Share</button>
+          <button onClick={handleDelete}>Delete</button>
+        </Box>
+      )}
       <Box sx={{ display: "flex", gap: 1 }}>
-        <button onClick={handleDownload}>Download</button>
-        <button onClick={handleDelete}>Share</button>
-        <button onClick={handleDelete}>Delete</button>
+        {!editMode && <button onClick={() => setEditMode(true)}>Edit</button>}
+        {editMode && <button onClick={onSaveClick}>Save</button>}
+        {editMode && <button onClick={onCancelClick}>Cancel</button>}
       </Box>
     </Stack>
   );

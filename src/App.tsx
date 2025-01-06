@@ -27,8 +27,22 @@ function App() {
   const routes = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Layout />}>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/all-files" element={<AllFilesPage />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <MainPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/all-files"
+          element={
+            <ProtectedRoute>
+              <AllFilesPage />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/profile"
           element={

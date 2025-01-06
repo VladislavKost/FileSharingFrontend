@@ -1,7 +1,7 @@
 import { AxiosPromise } from "axios";
 import { axiosInstance } from "../instance";
 import Endpoints from "../endpoints";
-import { IFile } from "../../store/files/filesSlice";
+import { IFile, IFileUpdate } from "../../store/files/filesSlice";
 
 export const getMyFilesApiRequest = (): AxiosPromise<IFile[]> => {
   return axiosInstance.get(Endpoints.AUTH.MY_FILES);
@@ -27,4 +27,10 @@ export const downloadFileApiRequest = (id: number): AxiosPromise => {
 
 export const getAllFilesApiRequest = (): AxiosPromise<IFile[]> => {
   return axiosInstance.get(Endpoints.AUTH.ALL_FILES);
+};
+export const updateFileInfoApiRequest = (
+  id: number,
+  data: IFileUpdate
+): AxiosPromise => {
+  return axiosInstance.patch(`${Endpoints.AUTH.MY_FILES}${id}/`, data);
 };

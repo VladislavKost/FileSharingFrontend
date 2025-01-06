@@ -5,12 +5,14 @@ import {
   getAllFilesApiRequest,
   getMyFilesApiRequest,
   uploadFileApiRequest,
+  updateFileInfoApiRequest,
 } from "../../api/files";
 import {
   loadFilesFailure,
   loadFilesStart,
   loadFilesSuccess,
   loadAllFilesSuccess,
+  IFileUpdate,
 } from "./filesSlice";
 
 export const getMyFiles = () => async (dispatch: Dispatch) => {
@@ -67,3 +69,14 @@ export const getAllFiles = () => async (dispatch: Dispatch) => {
     dispatch(loadFilesFailure(error.message));
   }
 };
+
+export const updateFileInfo =
+  (id: number, data: IFileUpdate) => async (dispatch: Dispatch) => {
+    try {
+      await updateFileInfoApiRequest(id, data);
+      dispatch(getMyFiles() as any);
+      dispatch(getAllFiles() as any);
+    } catch (error: any) {
+      console.log(error);
+    }
+  };

@@ -17,6 +17,11 @@ export interface IFile {
   comment: string;
 }
 
+export interface IFileUpdate {
+  file_name: string;
+  comment: string;
+}
+
 export interface IFilesState {
   allFiles: IFile[];
   files: IFile[];
