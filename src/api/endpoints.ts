@@ -14,6 +14,8 @@ const Endpoints = {
 
     MY_FILES: "/files/", // POST, GET, DELETE
     ALL_FILES: "/files/all", // POST, GET, DELETE
+
+    ALL_USERS: "/users/", // GET, DELETE
   },
 };
 export default Endpoints;

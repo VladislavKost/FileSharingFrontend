@@ -6,10 +6,32 @@ import { RootState } from "../../store";
 
 export const NavList = ({ ...props }) => {
   const isAuth = useAppSelector((state: RootState) => state.auth.isAuth);
+  const isAdmin = useAppSelector(
+    (state: RootState) => state.auth.profileData.profile?.is_admin
+  );
 
   const pages = [
-    { name: "My files", id: "my-files", href: "/my-files", secure: true },
-    { name: "All files", id: "all-files", href: "/all-files", secure: true },
+    {
+      name: "My files",
+      id: "my-files",
+      href: "/my-files",
+      secure: true,
+      admin: false,
+    },
+    {
+      name: "All files",
+      id: "all-files",
+      href: "/all-files",
+      secure: true,
+      admin: true,
+    },
+    {
+      name: "All users",
+      id: "all-users",
+      href: "/all-users",
+      secure: true,
+      admin: true,
+    },
     { name: "Profile", id: "profile", href: "/profile", secure: true },
   ];
 
@@ -25,6 +47,9 @@ export const NavList = ({ ...props }) => {
     >
       {pages.map((page) => {
         if (page.secure && !isAuth) {
+          return null;
+        }
+        if (page.admin && !isAdmin) {
           return null;
         }
         return (

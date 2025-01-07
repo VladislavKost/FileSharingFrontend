@@ -18,6 +18,7 @@ import { Layout } from "./components/Layout";
 import { RegistrationEmailVerifyPage } from "./components/RegistrationEmailVerifyPage";
 import { AllFilesPage } from "./pages/AllFilesPage";
 import { DownloadFilePage } from "./pages/DownloadFilePage";
+import { AllUsersPage } from "./pages/AllUsersPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -36,7 +37,7 @@ function App() {
         <Route
           path="/my-files"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute adminPage={false}>
               <MainPage />
             </ProtectedRoute>
           }
@@ -45,15 +46,23 @@ function App() {
         <Route
           path="/all-files"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute adminPage={true}>
               <AllFilesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/all-users"
+          element={
+            <ProtectedRoute adminPage={false}>
+              <AllUsersPage />
             </ProtectedRoute>
           }
         />
         <Route
           path="/profile"
           element={
-            <ProtectedRoute>
+            <ProtectedRoute adminPage={false}>
               <ProfilePage />
             </ProtectedRoute>
           }

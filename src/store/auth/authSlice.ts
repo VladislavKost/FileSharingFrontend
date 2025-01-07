@@ -4,12 +4,14 @@ import { ILoginResponse } from "../../api/auth/types";
 
 export interface IProfile {
   pk: number | null;
+  id: number | null;
   email: string | null;
   username: string | null;
   first_name: string | null;
   last_name: string | null;
   gender: string | null;
   user_image: string | null;
+  is_admin: boolean;
 }
 
 export interface IRegistrationFormErrors {
