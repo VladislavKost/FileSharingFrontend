@@ -10,6 +10,7 @@ import {
   loadUsersStart,
   loadUsersSuccess,
 } from "./usersSlice";
+import { getProfile } from "../auth/authCreators";
 
 export const getAllUsers = () => async (dispatch: Dispatch<any>) => {
   try {
@@ -28,6 +29,7 @@ export const changeAdminRight =
       await changeAdminRightApiRequest(userId, value);
       const response = await getAllUsersApiRequest();
       dispatch(loadUsersSuccess(response.data));
+      dispatch(getProfile());
     } catch (error: any) {
       console.log(error);
       dispatch(loadUsersFailure(error.message));
