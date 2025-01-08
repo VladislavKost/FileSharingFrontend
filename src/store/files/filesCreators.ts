@@ -6,6 +6,7 @@ import {
   getMyFilesApiRequest,
   uploadFileApiRequest,
   updateFileInfoApiRequest,
+  getUserFilesApiRequest,
 } from "../../api/files";
 import {
   loadFilesFailure,
@@ -103,3 +104,14 @@ export const updateFileInfo =
       console.log(error);
     }
   };
+
+export const getUserFiles = (id: number) => async (dispatch: Dispatch) => {
+  try {
+    dispatch(loadFilesStart());
+    const response = await getUserFilesApiRequest(id);
+    return response.data;
+  } catch (error: any) {
+    console.log(error);
+    dispatch(loadFilesFailure(error.message));
+  }
+};

@@ -1,14 +1,17 @@
 import Stack from "@mui/material/Stack";
-import { useAppSelector } from "../../hooks";
 import { FileItem } from "../FileItem";
+import { IFile } from "../../store/files/filesSlice";
+import { IUser } from "../../store/users/usersSlice";
 
-export const FilesList = ({ all = false }) => {
-  let files;
-  if (all) {
-    files = useAppSelector((state) => state.files.allFiles);
-  } else {
-    files = useAppSelector((state) => state.files.files);
-  }
+export const FilesList = ({
+  files,
+  type,
+  user,
+}: {
+  files: IFile[];
+  type: string;
+  user?: IUser;
+}) => {
   return (
     <Stack
       direction="row"
@@ -20,7 +23,12 @@ export const FilesList = ({ all = false }) => {
       }}
     >
       {files.map((file) => (
-        <FileItem key={file.id} file={file} all={all} />
+        <FileItem
+          key={file.id}
+          file={file}
+          type={type}
+          user={user || undefined}
+        />
       ))}
     </Stack>
   );

@@ -4,11 +4,15 @@ import Endpoints from "../endpoints";
 import { IFile, IFileUpdate } from "../../store/files/filesSlice";
 
 export const getMyFilesApiRequest = (): AxiosPromise<IFile[]> => {
-  return axiosInstance.get(Endpoints.AUTH.MY_FILES);
+  return axiosInstance.get(Endpoints.AUTH.FILES);
+};
+
+export const getUserFilesApiRequest = (id: number): AxiosPromise<IFile[]> => {
+  return axiosInstance.get(`${Endpoints.AUTH.USER_FILES}${id}/`);
 };
 
 export const uploadFileApiRequest = (params: FormData): AxiosPromise => {
-  return axiosInstance.post(Endpoints.AUTH.MY_FILES, params, {
+  return axiosInstance.post(Endpoints.AUTH.FILES, params, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -16,11 +20,11 @@ export const uploadFileApiRequest = (params: FormData): AxiosPromise => {
 };
 
 export const deleteFileApiRequest = (id: number): AxiosPromise => {
-  return axiosInstance.delete(`${Endpoints.AUTH.MY_FILES}${id}/`);
+  return axiosInstance.delete(`${Endpoints.AUTH.FILES}${id}/`);
 };
 
 export const downloadFileApiRequest = (id: number): AxiosPromise => {
-  return axiosInstance.get(`${Endpoints.AUTH.MY_FILES}${id}/`, {
+  return axiosInstance.get(`${Endpoints.AUTH.FILES}${id}/`, {
     responseType: "blob",
   });
 };
@@ -32,5 +36,5 @@ export const updateFileInfoApiRequest = (
   id: number,
   data: IFileUpdate
 ): AxiosPromise => {
-  return axiosInstance.patch(`${Endpoints.AUTH.MY_FILES}${id}/`, data);
+  return axiosInstance.patch(`${Endpoints.AUTH.FILES}${id}/`, data);
 };

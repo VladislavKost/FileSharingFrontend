@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface IUser {
-  id: string;
+  id: number;
   pk: string;
   email: string;
   first_name: string;

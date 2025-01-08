@@ -10,13 +10,15 @@ import {
 } from "../../store/files/filesCreators";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
+import { IUser } from "../../store/users/usersSlice";
 
 export const FileItem = ({
   file,
-  all = false,
+  type,
 }: {
   file: IFile;
-  all: boolean;
+  type: string;
+  user: IUser | undefined;
 }) => {
   const dispatch = useAppDispatch();
   const [editMode, setEditMode] = useState(false);
@@ -28,9 +30,9 @@ export const FileItem = ({
 
   const handleDownload = () => {
     dispatch(downloadFile(file.id));
-    if (!all) {
+    if (type === "my") {
       dispatch(getMyFiles());
-    } else {
+    } else if (type === "all") {
       dispatch(getAllFiles());
     }
   };
@@ -108,7 +110,7 @@ export const FileItem = ({
           />
         </Box>
       )}
-      {all && file.owner && (
+      {type === "all" && file.owner && (
         <Box
           sx={{
             textAlign: "center",

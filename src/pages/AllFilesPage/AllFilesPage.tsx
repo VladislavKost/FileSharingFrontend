@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useAppDispatch } from "../../hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getAllFiles } from "../../store/files/filesCreators";
 import { FilesList } from "../../components/FilesList";
 
@@ -8,11 +8,11 @@ export const AllFilesPage = () => {
   useEffect(() => {
     dispatch(getAllFiles());
   }, []);
-
+  const files = useAppSelector((state) => state.files.allFiles);
   return (
     <div>
       <h1>All files</h1>
-      <FilesList all={true} />
+      <FilesList files={files} type="all" />
     </div>
   );
 };

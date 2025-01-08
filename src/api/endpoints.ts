@@ -12,7 +12,8 @@ const Endpoints = {
     REGISTRATION_EMAIL_VERIFICATION: "/users/registration/verify-email/", // POST
     REGISTRATION_RESEND_EMAIL_VERIFICATION: "/users/registration/resend-email/", // POST
 
-    MY_FILES: "/files/", // POST, GET, DELETE
+    FILES: "/files/", // POST, GET, DELETE
+    USER_FILES: "/files/user/", // GET
     ALL_FILES: "/files/all", // POST, GET, DELETE
 
     ALL_USERS: "/users/", // GET, DELETE

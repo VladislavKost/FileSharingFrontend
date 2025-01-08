@@ -19,6 +19,7 @@ import { RegistrationEmailVerifyPage } from "./components/RegistrationEmailVerif
 import { AllFilesPage } from "./pages/AllFilesPage";
 import { DownloadFilePage } from "./pages/DownloadFilePage";
 import { AllUsersPage } from "./pages/AllUsersPage";
+import { UserFilesPage } from "./pages/UserFilesPage";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -42,12 +43,21 @@ function App() {
             </ProtectedRoute>
           }
         />
+
         <Route path="/files/:id" element={<DownloadFilePage />} />
         <Route
           path="/all-files"
           element={
             <ProtectedRoute adminPage={true}>
               <AllFilesPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/all-files/:id"
+          element={
+            <ProtectedRoute adminPage={false}>
+              <UserFilesPage />
             </ProtectedRoute>
           }
         />
