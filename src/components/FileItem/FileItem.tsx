@@ -10,15 +10,15 @@ import {
 } from "../../store/files/filesCreators";
 import Box from "@mui/material/Box";
 import { useEffect, useState } from "react";
-import { IUser } from "../../store/users/usersSlice";
 
 export const FileItem = ({
   file,
   type,
+  setUpdateFiles,
 }: {
   file: IFile;
   type: string;
-  user: IUser | undefined;
+  setUpdateFiles?: (value: boolean) => void;
 }) => {
   const dispatch = useAppDispatch();
   const [editMode, setEditMode] = useState(false);
@@ -34,6 +34,8 @@ export const FileItem = ({
       dispatch(getMyFiles());
     } else if (type === "all") {
       dispatch(getAllFiles());
+    } else if (type === "user" && setUpdateFiles) {
+      setUpdateFiles(true);
     }
   };
 

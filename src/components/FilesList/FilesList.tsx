@@ -1,16 +1,15 @@
 import Stack from "@mui/material/Stack";
 import { FileItem } from "../FileItem";
 import { IFile } from "../../store/files/filesSlice";
-import { IUser } from "../../store/users/usersSlice";
 
 export const FilesList = ({
   files,
   type,
-  user,
+  setUpdateFiles,
 }: {
   files: IFile[];
   type: string;
-  user?: IUser;
+  setUpdateFiles?: (value: boolean) => void;
 }) => {
   return (
     <Stack
@@ -27,7 +26,7 @@ export const FilesList = ({
           key={file.id}
           file={file}
           type={type}
-          user={user || undefined}
+          setUpdateFiles={setUpdateFiles}
         />
       ))}
     </Stack>

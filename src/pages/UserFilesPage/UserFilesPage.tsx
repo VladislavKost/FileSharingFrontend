@@ -9,6 +9,7 @@ import { IUser } from "../../store/users/usersSlice";
 
 export const UserFilesPage = () => {
   const [userFiles, setUserFiles] = useState<IFile[]>([]);
+  const [updateFiles, setUpdateFiles] = useState<boolean>(false);
   const [user, setUser] = useState<IUser | undefined>(undefined);
   const dispatch = useAppDispatch();
   const params = useParams();
@@ -25,13 +26,29 @@ export const UserFilesPage = () => {
       }
     });
   }, [dispatch, id]);
+
+  useEffect(() => {
+    if (updateFiles) {
+      dispatch(getUserFiles(id)).then((files) => {
+        if (files) {
+          setUserFiles(files);
+        }
+      });
+      setUpdateFiles(false);
+    }
+  }, [updateFiles]);
+
   return (
     <div>
       <h1>
         {user?.first_name} {user?.last_name} files
       </h1>
       <h1>Files amount: {user?.files_amount}</h1>
-      <FilesList files={userFiles} type="user" user={user} />
+      <FilesList
+        files={userFiles}
+        type="user"
+        setUpdateFiles={setUpdateFiles}
+      />
     </div>
   );
 };
