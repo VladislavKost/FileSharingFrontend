@@ -11,11 +11,13 @@ const Endpoints = {
     REGISTRATION: "/users/registration/", // POST
     REGISTRATION_EMAIL_VERIFICATION: "/users/registration/verify-email/", // POST
     REGISTRATION_RESEND_EMAIL_VERIFICATION: "/users/registration/resend-email/", // POST
-
+  },
+  FILES: {
     FILES: "/files/", // POST, GET, DELETE
     USER_FILES: "/files/user/", // GET
     ALL_FILES: "/files/all", // POST, GET, DELETE
-
+  },
+  USERS: {
     ALL_USERS: "/users/", // GET, DELETE
   },
 };
