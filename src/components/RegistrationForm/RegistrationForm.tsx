@@ -11,6 +11,7 @@ import {
   IRegistrationFormErrors,
   registrationFailure,
 } from "../../store/auth/authSlice";
+import { Typography } from "@mui/material";
 
 export const RegistrationForm = () => {
   const dispatch = useAppDispatch();
@@ -59,9 +60,8 @@ export const RegistrationForm = () => {
           <h2>Registration success</h2>
           <p>
             Registration success. The confirmation email is send to your email
-            address. Please confirm it to use your account!
+            address.
           </p>
-          <Button type="button">On Login page</Button>
         </div>
       ) : (
         <form
@@ -106,7 +106,16 @@ export const RegistrationForm = () => {
               helperText={registrationData.error?.password2}
               onChange={(e) => setPassword2(e.target.value)}
             />
-            <div>{registrationData.error?.non_field_errors}</div>
+            <Typography
+              sx={{
+                color: "#d32f2f",
+                fontSize: "0.75rem",
+                marginLeft: "14px",
+                marginTop: "3px",
+              }}
+            >
+              {registrationData.error?.non_field_errors}
+            </Typography>
             <Button type="submit">Registration</Button>
           </Stack>
         </form>

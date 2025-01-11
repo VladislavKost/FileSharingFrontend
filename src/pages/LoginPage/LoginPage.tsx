@@ -6,7 +6,7 @@ export const LoginPage = () => {
     <>
       <h1>LoginPage</h1>
       <SingInForm />
-      <Link to="/registration">Register</Link>
+      <Link to="/registration">Registration page</Link>
     </>
   );
 };

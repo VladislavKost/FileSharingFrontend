@@ -30,6 +30,7 @@ export const FileUploadForm = () => {
   };
   return (
     <Stack direction={"column"} sx={{ margin: "50px" }}>
+      <h2>Add new file</h2>
       <form onSubmit={handleSubmit}>
         <Box
           sx={{

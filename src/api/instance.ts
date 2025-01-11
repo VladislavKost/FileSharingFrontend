@@ -65,7 +65,11 @@ axiosInstance.interceptors.response.use(
       } catch (refreshedError) {
         store.dispatch(logoutUser());
       }
-    } else if (error.response?.status === 401 && !isLoggedIn) {
+    } else if (
+      error.response?.status === 401 &&
+      !isLoggedIn &&
+      error.config?.url === Endpoints.AUTH.LOGOUT
+    ) {
       store.dispatch(logoutUser());
     } else {
       throw error;
