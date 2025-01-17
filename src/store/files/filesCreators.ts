@@ -48,8 +48,8 @@ export const deleteFile = (id: number) => async (dispatch: Dispatch) => {
 const decodeMimeString = (mimeString: string): string => {
   const mimeRegex = /=\?([\w-]+)\?([Bb])\?([^?]+)\?=/g;
   const decodedStringFunction = (
-    match: string,
-    charset: string,
+    _match: string,
+    _charset: string,
     encoding: string,
     encoded: string
   ): string => {
@@ -57,8 +57,7 @@ const decodeMimeString = (mimeString: string): string => {
       return window.atob(encoded);
     }
     return decodeURIComponent(escape(window.atob(encoded)));
-  };
-  return mimeString.replace(mimeRegex, decodedStringFunction);
+  };  return mimeString.replace(mimeRegex, decodedStringFunction);
 };
 
 const getFileName = (contentDisposition: string) => {
@@ -68,7 +67,7 @@ const getFileName = (contentDisposition: string) => {
   return match ? match[1] : "UnknownName.txt";
 };
 
-export const downloadFile = (id: number) => async (dispatch: Dispatch) => {
+export const downloadFile = (id: number) => async () => {
   try {
     const response = await downloadFileApiRequest(id);
     const contentDisposition = response.headers["content-disposition"];

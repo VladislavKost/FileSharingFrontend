@@ -292,8 +292,7 @@ export const authSlice = createSlice({
         error: action.payload,
       },
     }),
-    logoutSuccess: (state: AuthState) => initialState,
-    refreshTokenSuccess: (
+    logoutSuccess: () => initialState,    refreshTokenSuccess: (
       state: AuthState,
       action: PayloadAction<{ access: string; access_expiration: string }>
     ) => ({
