@@ -24,6 +24,7 @@ export const FileItem = ({
   const [editMode, setEditMode] = useState(false);
   const [comment, setComment] = useState(file.comment);
   const [fileName, setFileName] = useState(file.file_name);
+  const [shareLink, setShareLink] = useState("");
   const handleDelete = () => {
     dispatch(deleteFile(file.id));
     setUpdateFiles && setUpdateFiles(true);
@@ -58,6 +59,16 @@ export const FileItem = ({
       dispatch(updateFileInfo(file.id, newData));
     }
     setUpdateFiles && setUpdateFiles(true);
+  };
+
+  useEffect(() => {
+    createShareLink();
+  });
+
+  const createShareLink = async () => {
+    const origin = window.location.origin.toString();
+    const shareUrl = `${origin}/files/${file.id}`;
+    setShareLink(shareUrl);
   };
 
   const handleShare = async () => {
@@ -195,6 +206,16 @@ export const FileItem = ({
           />
         </Box>
       )}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          textAlign: "center",
+        }}
+      >
+        <div>Share link:</div>
+        <div>{shareLink}</div>
+      </Box>
       {!editMode && (
         <Box sx={{ display: "flex", gap: 1 }}>
           <button onClick={handleDownload}>Download</button>
