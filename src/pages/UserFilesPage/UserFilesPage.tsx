@@ -25,7 +25,7 @@ export const UserFilesPage = () => {
         setUserFiles(files);
       }
     });
-  }, [dispatch, id]);
+  }, [dispatch, id, updateFiles]);
 
   useEffect(() => {
     if (updateFiles) {

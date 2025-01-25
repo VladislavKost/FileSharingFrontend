@@ -18,7 +18,7 @@ export const FileItem = ({
 }: {
   file: IFile;
   type: string;
-  setUpdateFiles?: (value: boolean) => void;
+  setUpdateFiles?: (value: any) => void;
 }) => {
   const dispatch = useAppDispatch();
   const [editMode, setEditMode] = useState(false);
@@ -26,6 +26,7 @@ export const FileItem = ({
   const [fileName, setFileName] = useState(file.file_name);
   const handleDelete = () => {
     dispatch(deleteFile(file.id));
+    setUpdateFiles && setUpdateFiles(true);
   };
 
   const handleDownload = () => {
@@ -35,7 +36,7 @@ export const FileItem = ({
     } else if (type === "all") {
       dispatch(getAllFiles());
     } else if (type === "user" && setUpdateFiles) {
-      setUpdateFiles(true);
+      setUpdateFiles((prev: boolean) => !prev);
     }
   };
 
@@ -56,12 +57,23 @@ export const FileItem = ({
       };
       dispatch(updateFileInfo(file.id, newData));
     }
+    setUpdateFiles && setUpdateFiles(true);
   };
 
-  const handleShare = () => {
-    const origin = window.location.origin.toString();
-    const shareUrl = `${origin}/files/${file.id}`;
-    navigator.clipboard.writeText(shareUrl);
+  const handleShare = async () => {
+    if (navigator.clipboard) {
+      const origin = window.location.origin.toString();
+      const shareUrl = `${origin}/files/${file.id}`;
+
+      try {
+        await navigator.clipboard.writeText(shareUrl);
+        console.log("Share URL copied to clipboard!");
+      } catch (err) {
+        console.error("Could not copy text: ", err);
+      }
+    } else {
+      console.error("Clipboard API not supported");
+    }
   };
 
   const onCancelClick = () => {
